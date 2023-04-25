@@ -1,0 +1,31 @@
+.navbar
+  background: orange
+  padding: 40px 15px 15px 15px
+  gap: 10px
+  display: flex
+  flex-direction: column
+  transition: all 1s
+  a
+    transition: all 0.5s
+  a:not(:last-child):hover
+    transform: translateX(10px)
+  a:last-child
+    margin-top: auto
+
+  .logout
+    margin-top: auto
+    // background-color: #ff444480
+    background-color: inherit
+    border: none
+    color: white
+    font-size: 24px
+    cursor: pointer
+    padding: 0px
+    margin-right: 40px
+    border-radius: 10px
+    transition: all 0.5s
+    &:hover
+      color: #ce1010
+      font-weight: 700
+      background-color: #298c8e
+      padding: 10px

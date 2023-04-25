@@ -1,0 +1,73 @@
+// определение переменных
+$primary-color: #007bff
+$shadow-color: rgba(0, 0, 0, 0.2)
+$shadow-offset-x: 0
+$shadow-offset-y: 4px
+$shadow-blur: 10px
+
+.form-wrapper
+  display: flex
+  width: 100%
+  height: 100%
+  justify-content: center
+  align-items: center
+  padding: 40px
+
+.login-form
+  display: flex
+  flex-direction: column
+  gap: 10px
+  flex: 0 1 50%
+
+.text__input,.password__input
+  width: 100%
+  border: none
+  border-radius: 5px
+  padding: 10px
+  font-size: 16px
+  color: $primary-color
+  box-shadow: $shadow-offset-x $shadow-offset-y $shadow-blur $shadow-color
+  transition: box-shadow 0.3s ease-in-out
+  &:focus
+    outline: none
+    box-shadow: $shadow-offset-x $shadow-offset-y $shadow-blur $shadow-color, 0 0 0 2px $primary-color
+
+.text-label, .password-label
+  display: block
+  margin-bottom: 10px
+  font-size: 18px
+  font-weight: bold
+  display: flex
+  flex-direction: column
+  gap: 15px
+  position: relative
+
+.submit-button
+
+  background-color: $primary-color
+  color: white
+  cursor: pointer
+  width: 100%
+  border: none
+  border-radius: 5px
+  padding: 10px
+  font-size: 16px
+  box-shadow: $shadow-offset-x $shadow-offset-y $shadow-blur $shadow-color
+  transition: box-shadow 0.3s ease-in-out
+  &:focus
+    outline: none
+    box-shadow: $shadow-offset-x $shadow-offset-y $shadow-blur $shadow-color, 0 0 0 2px $primary-color
+  &:hover
+    background-color: darken($primary-color, 10%)
+
+.error-message
+  position: absolute
+  bottom: -22%
+  font-size: 12px
+  color: red
+
+.eye-password
+  position: absolute
+  right: 0
+  bottom: 14%
+  cursor: pointer

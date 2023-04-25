@@ -1,0 +1,58 @@
+
+.overlay
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background-color: rgba(0, 0, 0, 0.5)
+  z-index: 1000
+
+.modal
+  position: absolute
+  top: 50%
+  left: 50%
+  width: 50%
+  height: 70%
+  transform: translate(-50%, -50%)
+  background-color: white
+  padding: 1rem
+  border-radius: 4px
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2)
+
+.submit
+  background: inherit
+  border: none
+  font-size: 24px
+  padding: 10px
+  cursor: pointer
+  position: absolute
+  bottom: 0
+  right: 0
+
+.closeBtn
+  position: absolute
+  top: 10px
+  right: 10px
+  cursor: pointer
+
+  &::after
+    content: ''
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    height: 2px
+    width: 20px
+    background-color: black
+    transform: translate(-50%, -50%) rotate(133deg)
+
+  &::before
+    content: ''
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%) rotate(45deg)
+    height: 2px
+    width: 20px
+    background-color: black

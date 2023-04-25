@@ -1,0 +1,60 @@
+$primary-color: #3c3c3c
+$secondary-color: #8a8a8a
+$border-radius: 10px
+$box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2)
+
+.friend-card__wrapper
+  position: relative
+
+.friend-card__delete
+  background: inherit
+  color: red
+  position: absolute
+  top: 0
+  right: 0
+  padding: 10px 20px
+  border: 2px solid red
+  transition: all .5s
+  cursor: pointer
+  &:hover
+    background: red
+    color: white
+
+.friend-card
+  text-decoration: none
+  text-underline: none
+  background-color: white
+  border-radius: $border-radius
+  box-shadow: $box-shadow
+  padding: 20px
+  margin-bottom: 20px
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+
+  &__name
+    font-size: 24px
+    font-weight: bold
+    color: $primary-color
+    margin-bottom: 10px
+
+  &__female
+    font-size: 18px
+    color: $secondary-color
+    margin-bottom: 10px
+
+  &__friend, &__deeds
+    font-size: 16px
+    color: $primary-color
+    margin-bottom: 5px
+
+    &:before
+      content: "-"
+      margin-right: 5px
+
+  &__nickname
+    font-size: 18px
+    font-weight: bold
+    color: $primary-color
+    margin-top: 10px
