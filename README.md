@@ -19,3 +19,5 @@
 перейти по адресу http://localhost:3000 для просмотра фронтенда,
 атакже отправить запрос на бэкенд по адресу http://localhost:5000/../..
 почитать backend документацию http://localhost:5000/api/docs
+
+(screenshot.png)
