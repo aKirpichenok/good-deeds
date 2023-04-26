@@ -5,6 +5,7 @@ import { Model, ObjectId } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ReturnProps } from 'src/auth/auth.service';
+import { Deed } from 'src/deeds/schemas/deeds.schemas';
 
 interface UserWithId extends User {
   _id: string
@@ -100,11 +101,26 @@ export class UserService {
     }
   }
 
-  async getFriends(nickname): Promise<User[]> {
+  async getFriends(nickname): Promise<Deed[]> {
     const user: any = await this.userModel.findOne({
       nickname: { $regex: new RegExp(nickname) }
     }).populate('friends')
     return user.friends
+  }
+
+  async getFriendsDeeds(nickname): Promise<Deed[]> {
+    const userFriends: any = await this.userModel.findOne({
+      nickname: { $regex: new RegExp(nickname) }
+    })
+    console.log(userFriends)
+    const friendsDeeds = await userFriends.friends.reduce(async (acc, friend) => {
+      const newAcc = await acc
+      const friendDeeds = await this.getSelect(friend)
+      newAcc.push(...friendDeeds.deeds)
+      return acc
+    }, [])
+    console.log(friendsDeeds)
+    return friendsDeeds
   }
 
   async searchFriends(nickname = 'nothing', count = 10, offset = 0): Promise<User[]> {

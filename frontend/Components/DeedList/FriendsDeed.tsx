@@ -1,21 +1,17 @@
 import { useEffect, useState } from "react";
-import { useGetFriendsQuery } from "../../store/api/UserController";
+import { useGetFriendsDeedQuery } from "../../store/api/UserController";
 import { DeedItem } from "../DeedItem/DeedItem";
 
 import styles from "./DeedList.module.sass";
 
 export const FriendsDeeds = () => {
-  const { data, isLoading, refetch } = useGetFriendsQuery({});
   const [deeds, setDeeds] = useState([]);
+  const { data, isLoading, refetch } = useGetFriendsDeedQuery({});
 
   useEffect(() => {
+    setDeeds(data);
     refetch();
-    const deeds = data?.reduce((acc, friend) => {
-      if (friend.deeds.length > 0) acc.push(...friend.deeds);
-      return acc;
-    }, []);
-    setDeeds(deeds);
-  }, [isLoading]);
+  }, [data]);
 
   return (
     <>

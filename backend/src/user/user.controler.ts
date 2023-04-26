@@ -53,6 +53,12 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('/get/friends/deeds')
+  getFriendsDeeds(@Req() req) {
+    return this.userService.getFriendsDeeds(req.user.nickname)
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('/search/friends')
   searchFriends(@Query('nickname') nickname: string, @Query('count') count: number,
     @Query('offset') offset: number) {

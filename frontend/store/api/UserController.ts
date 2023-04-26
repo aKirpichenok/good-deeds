@@ -38,6 +38,10 @@ export const UserController = createApi({
     getFriends: builder.query<IUserWithId[], {}>({
       query: () => '/get/friends'
     }),
+
+    getFriendsDeed: builder.query<IUserWithId[], {}>({
+      query: () => '/get/friends/deeds'
+    }),
     searchFriends: builder.query<IUserWithId[], string>({
       query: (nickname) => `search/friends?nickname=${nickname}`
     }),
@@ -74,6 +78,7 @@ export const {
   useGetAllUsersQuery,
   useGetUserQuery,
   useGetFriendsQuery,
+  useGetFriendsDeedQuery,
   useAddFriendMutation,
   useDeleteFriendMutation,
   useSearchFriendsQuery,
