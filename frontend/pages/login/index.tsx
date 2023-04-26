@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useLoginMutation } from "../../store/api/AuthController";
-import { addId, addNickname, addToken } from "../../store/reducers/userReducer";
+import {
+  addFriend,
+  addId,
+  addNickname,
+  addToken,
+} from "../../store/reducers/userReducer";
 import { useAppDispatch } from "../../store/hook";
 
 import styles from "./index.module.sass";
@@ -27,6 +32,7 @@ const Login = () => {
         dispatch(addId(result.id));
         dispatch(addNickname(login));
         localStorage.setItem("token", result.token);
+        dispatch(addFriend(result.friends));
         route.push("/");
       }
     } catch (e) {

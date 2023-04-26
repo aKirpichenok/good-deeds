@@ -10,20 +10,26 @@ import {
 } from "../../store/api/UserController";
 import { useEffect, useState } from "react";
 import { FriendsColumn } from "../../Components/FriendsColumn/FriendsColumn";
+import { useAppDispatch, useAppSelector } from "../../store/hook";
+import { deleteFriend } from "../../store/reducers/userReducer";
 
 const Friends = () => {
   const { data, refetch, isLoading: isLoadingFriends } = useGetFriendsQuery({});
   const [searchText, setSearchText] = useState("");
   const { data: findUsers, isLoading } = useSearchFriendsQuery(searchText);
 
+  const { friends } = useAppSelector((state) => state.userReducer);
+  const dispatch = useAppDispatch();
+
   const [deleteTrigger] = useDeleteFriendMutation();
 
   const handleDelete = async (nickname) => {
-    await deleteTrigger(
+    const result = await deleteTrigger(
       JSON.stringify({
         friendNickname: nickname,
       }),
     ).unwrap();
+    dispatch(deleteFriend(friends - 1));
     refetch();
   };
 

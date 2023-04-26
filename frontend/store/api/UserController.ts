@@ -19,9 +19,12 @@ export const UserController = createApi({
   endpoints: (builder) => ({
     getAllUsers: builder.query({
       query: (id) => `/${id}`,
+      // transformResponse: (data) => {
+      //   return data.filter(friend => friend._id !== id)
+      // }
     }),
-    getUser: builder.query<IUserWithId, string>({
-      query: (id) => `/${id}`
+    getUser: builder.query<IUserWithId, any>({
+      query: ({ id }) => `/${id}`
     }),
     changeUser: builder.mutation<IUser, string>({
       query(body) {

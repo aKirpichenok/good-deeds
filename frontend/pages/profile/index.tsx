@@ -14,8 +14,8 @@ import { DeedItem } from "../../Components/DeedItem/DeedItem";
 import { useRouter } from "next/router";
 
 const Profile = () => {
-  const { id } = useAppSelector((state) => state.userReducer);
-  const { data: user, isLoading } = useGetUserQuery(id);
+  const { id, friends } = useAppSelector((state) => state.userReducer);
+  const { data: user, isLoading } = useGetUserQuery({ id, friends });
   const [changeTrigger] = useChangeUserMutation();
   const [deleteTrigger] = useDeleteUserMutation();
   const [name, setName] = useState(user?.name);
@@ -107,7 +107,7 @@ const Profile = () => {
             </h2>
             <h2 className={styles["profile-friends"]}>
               <span className={styles["highlight"]}>Друзья:</span>{" "}
-              <span className={styles["result"]}>{user?.friends.length}</span>
+              <span className={styles["result"]}>{friends}</span>
             </h2>
             {isEdit && (
               <div className={styles["buttons-edit"]}>

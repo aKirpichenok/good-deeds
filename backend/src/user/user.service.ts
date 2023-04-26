@@ -95,7 +95,8 @@ export class UserService {
     return {
       token: this.jwtService.sign({ ...user }),
       id: user['_id'],
-      nickname: user.nickname
+      nickname: user.nickname,
+      friends: user.friends.length
     }
   }
 

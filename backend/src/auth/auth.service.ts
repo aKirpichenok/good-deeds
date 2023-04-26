@@ -12,6 +12,7 @@ export interface ReturnProps {
   token: string,
   id: ObjectId,
   nickname: string
+  friends: number;
 }
 
 
@@ -41,7 +42,8 @@ export class AuthService {
     return {
       token: this.jwtService.sign(payload),
       id: user['_id'],
-      nickname: user.nickname
+      nickname: user.nickname,
+      friends: user.friends.length
     }
   }
 

@@ -4,13 +4,13 @@ import { HYDRATE } from 'next-redux-wrapper'
 import { IDeed } from '../../types/deed'
 
 
-const initialState: IUser = {
+const initialState: any = {
   name: '',
   female: '',
   nickname: '',
   password: '',
   deeds: [],
-  friends: [],
+  friends: 0,
   token: '',
   id: '',
 }
@@ -30,6 +30,12 @@ const userSlice = createSlice({
     },
     addDeeds(state, action: PayloadAction<IDeed[]>) {
       state.deeds = action.payload
+    },
+    addFriend(state, action: PayloadAction<any>) {
+      state.friends = action.payload
+    },
+    deleteFriend(state, action: PayloadAction<any>) {
+      state.friends = action.payload
     }
   },
   extraReducers: {
@@ -46,6 +52,6 @@ const userSlice = createSlice({
 
 export default userSlice.reducer
 
-export const { addToken, addId, addNickname, addDeeds } = userSlice.actions
+export const { addToken, addId, addNickname, addDeeds, addFriend, deleteFriend } = userSlice.actions
 
 export const selectId = (state) => state.userReducer.id;
