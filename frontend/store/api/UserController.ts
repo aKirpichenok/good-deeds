@@ -20,9 +20,9 @@ export const UserController = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getAllUsers: builder.query({
-      query: (id) => `/${id}`
-    }),
+    // getAllUsers: builder.query({
+    //   query: (id) => `/${id}`
+    // }),
     getUser: builder.query<IUserWithId, any>({
       query: ({ id }) => `/${id}`
     }),
@@ -82,7 +82,7 @@ export const UserController = createApi({
 });
 
 export const {
-  useGetAllUsersQuery,
+  // useGetAllUsersQuery,
   useGetUserQuery,
   useGetFriendsQuery,
   useGetFriendsDeedQuery,

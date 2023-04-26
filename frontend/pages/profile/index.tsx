@@ -75,7 +75,7 @@ const Profile = () => {
             <span className={styles["highlight"]}>Посты:</span>{" "}
             <ul>
               {user?.deeds.map((deed) => (
-                <li>
+                <li key={deed._id}>
                   <DeedItem deed={deed} delete={false} />
                 </li>
               ))}

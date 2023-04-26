@@ -49,7 +49,7 @@ export const UserInfo = ({ isEdit, editProfile, submitEdit }) => {
 
   return (
     <>
-      {arr.map((field) =>
+      {arr.map((field, index) =>
         isEdit ? (
           <Input
             label={field.headerValue}
@@ -57,6 +57,7 @@ export const UserInfo = ({ isEdit, editProfile, submitEdit }) => {
             placeholder={field.headerValue}
             type="text"
             value={field.value}
+            key={index}
           />
         ) : (
           <>
