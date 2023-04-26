@@ -31,6 +31,7 @@ const Login = () => {
       if (result) {
         dispatch(addId(result.id));
         dispatch(addNickname(login));
+        localStorage.setItem("nickname", login);
         localStorage.setItem("token", result.token);
         dispatch(addFriend(result.friends));
         route.push("/");

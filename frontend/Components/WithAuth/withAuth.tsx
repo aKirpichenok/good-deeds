@@ -6,6 +6,10 @@ const withAuth = (WrappedComponent) => {
   const Wrapper = (props) => {
     const router = useRouter();
 
+    let token;
+    if (typeof window !== "undefined") {
+      token = localStorage.getItem("token");
+    }
     const { id } = useAppSelector((state) => state.userReducer);
     useEffect(() => {
       if (!id) {

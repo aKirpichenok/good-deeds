@@ -18,10 +18,7 @@ export const UserController = createApi({
   }),
   endpoints: (builder) => ({
     getAllUsers: builder.query({
-      query: (id) => `/${id}`,
-      // transformResponse: (data) => {
-      //   return data.filter(friend => friend._id !== id)
-      // }
+      query: (id) => `/${id}`
     }),
     getUser: builder.query<IUserWithId, any>({
       query: ({ id }) => `/${id}`
@@ -42,8 +39,13 @@ export const UserController = createApi({
     getFriendsDeed: builder.query<IUserWithId[], {}>({
       query: () => '/get/friends/deeds'
     }),
-    searchFriends: builder.query<IUserWithId[], string>({
-      query: (nickname) => `search/friends?nickname=${nickname}`
+    searchFriends: builder.query<IUserWithId[], any>({
+      query: (nickname) => `search/friends?nickname=${nickname}`,
+      transformResponse: (data: any) => {
+        const nickname = localStorage.getItem('nickname');
+        console.log(data.filter(friend => friend.nickname !== nickname))
+        return data.filter(friend => friend.nickname !== nickname)
+      }
     }),
     addFriend: builder.mutation<string, string>({
       query(body) {

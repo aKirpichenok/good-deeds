@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import withAuth from "../../Components/WithAuth/withAuth";
 import {
   useChangeUserMutation,
@@ -16,15 +16,22 @@ import { useRouter } from "next/router";
 const Profile = () => {
   const { id, friends } = useAppSelector((state) => state.userReducer);
   const { data: user, isLoading } = useGetUserQuery({ id, friends });
+  console.log("USER", user);
   const [changeTrigger] = useChangeUserMutation();
   const [deleteTrigger] = useDeleteUserMutation();
-  const [name, setName] = useState(user?.name);
-  const [female, setFemale] = useState(user?.female);
-  const [nickname, setNickname] = useState(user?.nickname);
+  const [name, setName] = useState("");
+  const [female, setFemale] = useState("");
+  const [nickname, setNickname] = useState("");
   const dispatch = useAppDispatch();
   const router = useRouter();
 
   const [isEdit, setIsEdit] = useState(false);
+
+  useEffect(() => {
+    setName(user?.name);
+    setFemale(user?.female);
+    setNickname(user?.nickname);
+  }, [user]);
 
   const handleClick = async () => {
     try {

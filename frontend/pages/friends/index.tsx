@@ -16,7 +16,9 @@ import { deleteFriend } from "../../store/reducers/userReducer";
 const Friends = () => {
   const { data, refetch, isLoading: isLoadingFriends } = useGetFriendsQuery({});
   const [searchText, setSearchText] = useState("");
-  const { data: findUsers, isLoading } = useSearchFriendsQuery(searchText);
+  const { data: findUsers, isLoading } = useSearchFriendsQuery(searchText, {
+    refetchOnMountOrArgChange: true,
+  });
 
   const { friends } = useAppSelector((state) => state.userReducer);
   const dispatch = useAppDispatch();
