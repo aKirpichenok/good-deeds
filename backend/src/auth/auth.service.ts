@@ -37,13 +37,16 @@ export class AuthService {
     return this.generateToken(user)
   }
 
-  private async generateToken(user: User): Promise<ReturnProps> {
+  private async generateToken(user: User): Promise<ReturnProps | User> {
     const payload = { name: user.name, nickname: user.nickname, deeds: [], friend: [], female: user.female }
     return {
       token: this.jwtService.sign(payload),
       id: user['_id'],
       nickname: user.nickname,
-      friends: user.friends.length
+      friends: user.friends.length,
+      name: user.name,
+      female: user.female,
+      deeds: user.deeds
     }
   }
 

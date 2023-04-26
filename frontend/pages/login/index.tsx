@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { useLoginMutation } from "../../store/api/AuthController";
 import {
@@ -6,39 +6,26 @@ import {
   addId,
   addNickname,
   addToken,
+  changeName,
 } from "../../store/reducers/userReducer";
 import { useAppDispatch } from "../../store/hook";
 
 import styles from "./index.module.sass";
 import { Input } from "../../ui/src/Input/Input";
 import Link from "next/link";
+import { useAuth } from "../../Components/AuthContext/AuthContext";
 
 const Login = () => {
-  const [loginTrigger, _] = useLoginMutation();
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
+  const [loginValue, setLogin] = useState("");
+  const [passwordValue, setPassword] = useState("");
   const [error, setError] = useState("");
   const route = useRouter();
   const dispatch = useAppDispatch();
+  const { loginUser } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const result = await loginTrigger(
-        JSON.stringify({ nickname: login, password: password }),
-      ).unwrap();
-      console.log("RESULT", result);
-      if (result) {
-        dispatch(addId(result.id));
-        dispatch(addNickname(login));
-        localStorage.setItem("nickname", login);
-        localStorage.setItem("token", result.token);
-        dispatch(addFriend(result.friends));
-        route.push("/");
-      }
-    } catch (e) {
-      setError(e?.data?.message);
-    }
+    loginUser(loginValue, passwordValue);
   };
   return (
     <div className={styles["form-wrapper"]}>

@@ -2,13 +2,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { IUser } from '../../types/user'
 import { HYDRATE } from 'next-redux-wrapper'
 import { IDeed } from '../../types/deed'
+import { IUserWithId } from '../../Components/FriendsColumn/FriendsColumn'
 
 
 const initialState: any = {
   name: '',
   female: '',
   nickname: '',
-  password: '',
   deeds: [],
   friends: 0,
   token: '',
@@ -19,6 +19,15 @@ const userSlice = createSlice({
   name: 'userSlice',
   initialState,
   reducers: {
+    login(state, action) {
+      const { deeds, female, friends, id, name, nickname } = action.payload
+      state.name = name
+      state.female = female
+      state.friends = friends
+      state.deeds = deeds
+      state.id = id
+      state.nickname = nickname
+    },
     addToken(state, action: PayloadAction<string>) {
       state.token = action.payload
     },
@@ -36,6 +45,17 @@ const userSlice = createSlice({
     },
     deleteFriend(state, action: PayloadAction<any>) {
       state.friends = action.payload
+    },
+    changeName(state, action) {
+      state.name = action.payload
+    },
+    changeFemale(state, action) {
+      state.female = action.payload
+
+    },
+    changeNickname(state, action) {
+      state.nickname = action.payload
+
     }
   },
   extraReducers: {
@@ -52,6 +72,6 @@ const userSlice = createSlice({
 
 export default userSlice.reducer
 
-export const { addToken, addId, addNickname, addDeeds, addFriend, deleteFriend } = userSlice.actions
+export const { login, addToken, addId, addNickname, addDeeds, addFriend, deleteFriend, changeFemale, changeName, changeNickname } = userSlice.actions
 
 export const selectId = (state) => state.userReducer.id;

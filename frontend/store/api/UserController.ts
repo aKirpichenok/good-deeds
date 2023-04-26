@@ -2,6 +2,9 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IUser } from '../../types/user';
 import { IUserWithId } from '../../Components/FriendsColumn/FriendsColumn';
 
+
+
+
 export const UserController = createApi({
   reducerPath: 'UserController',
   baseQuery: fetchBaseQuery({
@@ -39,13 +42,15 @@ export const UserController = createApi({
     getFriendsDeed: builder.query<IUserWithId[], {}>({
       query: () => '/get/friends/deeds'
     }),
-    searchFriends: builder.query<IUserWithId[], any>({
-      query: (nickname) => `search/friends?nickname=${nickname}`,
-      transformResponse: (data: any) => {
-        const nickname = localStorage.getItem('nickname');
-        console.log(data.filter(friend => friend.nickname !== nickname))
-        return data.filter(friend => friend.nickname !== nickname)
-      }
+    searchFriends: builder.query<IUserWithId[], { nickname: string, userNickname: string }>({
+      query: ({ nickname, userNickname }) => {
+        return {
+          url: `search/friends?nickname=${nickname}`
+        }
+      },
+      transformResponse: (data: any, meta, { userNickname }) => {
+        return data.filter(friend => friend.nickname !== userNickname)
+      },
     }),
     addFriend: builder.mutation<string, string>({
       query(body) {
