@@ -43,11 +43,7 @@ export const UserController = createApi({
       query: () => '/get/friends/deeds'
     }),
     searchFriends: builder.query<IUserWithId[], { nickname: string, userNickname: string }>({
-      query: ({ nickname, userNickname }) => {
-        return {
-          url: `search/friends?nickname=${nickname}`
-        }
-      },
+      query: ({ nickname, userNickname }) => `search/friends?nickname=${nickname}`,
       transformResponse: (data: any, meta, { userNickname }) => {
         return data.filter(friend => friend.nickname !== userNickname)
       },

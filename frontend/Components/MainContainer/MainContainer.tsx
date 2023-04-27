@@ -25,7 +25,7 @@ const MainContainer: FC<MainContainerProps> = ({ children, keywords }) => {
         <Header />
         <main className={styles["main"]}>{children}</main>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
