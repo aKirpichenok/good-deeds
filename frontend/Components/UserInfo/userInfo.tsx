@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { Input } from "../../ui/src/Input/Input";
 
-import styles from "./index.module.sass";
+import styles from "./userInfo.module.sass";
 import {
   changeFemale,
   changeName,

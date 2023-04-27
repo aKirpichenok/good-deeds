@@ -12,7 +12,7 @@ import { Input } from "../../ui/src/Input/Input";
 import { addId, addNickname } from "../../store/reducers/userReducer";
 import { DeedItem } from "../../Components/DeedItem/DeedItem";
 import { useRouter } from "next/router";
-import { UserInfo } from "./userInfo";
+import { UserInfo } from "../../Components/UserInfo/userInfo";
 
 const Profile = () => {
   const { id, friends } = useAppSelector((state) => state.userReducer);
