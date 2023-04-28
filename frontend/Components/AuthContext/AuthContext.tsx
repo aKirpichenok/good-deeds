@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
+import Cookie from "js-cookie";
 import {
   login,
   addFriend,
@@ -34,32 +35,30 @@ export function AuthProvider({ children }: Props) {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [loginTrigger, _] = useLoginMutation();
   const state = useAppSelector((state) => state.userReducer);
+  const route = useRouter();
 
   const router = useRouter();
   const dispatch = useAppDispatch();
+
+  const logout = () => {
+    Cookie.remove("token");
+    console.log("sdsd");
+    route.push("/");
+  };
 
   async function loginUser(nickname: string, password: string) {
     try {
       const result = await loginTrigger(
         JSON.stringify({ nickname: nickname, password: password }),
       ).unwrap();
-      console.log("RESULT", result);
       dispatch(login({ ...result }));
-      console.log("STATE", state);
-      // dispatch(addId(result.id));
-      // dispatch(addNickname(login));
-      // dispatch(changeName(login));
-      localStorage.setItem("nickname", nickname);
-      localStorage.setItem("token", result.token);
-      dispatch(addFriend(result.friends));
+      Cookie.set("token", result.token, { expires: 1 });
       router.push("/");
     } catch (e) {
       console.log(e);
       // setError(e?.data?.message);
     }
   }
-
-  async function logout() {}
 
   const value = {
     currentUser,

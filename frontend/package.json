@@ -14,6 +14,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@types/react-redux": "^7.1.25",
+    "js-cookie": "^3.0.5",
     "next": "^13.3.0",
     "next-redux-wrapper": "^8.1.0",
     "react": "^18.2.0",

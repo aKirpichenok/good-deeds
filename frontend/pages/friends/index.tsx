@@ -13,6 +13,8 @@ import { FriendsColumn } from "../../Components/FriendsColumn/FriendsColumn";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { deleteFriend } from "../../store/reducers/userReducer";
 
+import Cookie from "js-cookie";
+
 const Friends = () => {
   const { data, refetch, isLoading: isLoadingFriends } = useGetFriendsQuery({});
   const [searchText, setSearchText] = useState("");
@@ -79,3 +81,11 @@ const Friends = () => {
 };
 
 export default withAuth(Friends);
+
+export async function getServerSideProps({ req, res }) {
+  const token = Cookie.get("token");
+  res.setHeader("Set-Cookie", `token=${token}`);
+  return {
+    props: {},
+  };
+}
