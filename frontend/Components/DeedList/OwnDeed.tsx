@@ -13,7 +13,6 @@ export const OwnDeeds: FC<OwnDeedsProps> = ({ isAdd }) => {
   const { id } = useAppSelector((state) => state.userReducer);
 
   const { data, refetch, isLoading } = useGetUserQuery({ id });
-  console.log(data);
 
   useEffect(() => {
     refetch();

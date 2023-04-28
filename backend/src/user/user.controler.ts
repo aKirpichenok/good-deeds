@@ -29,6 +29,7 @@ export class UserController {
   @Post('/add/friend')
   addFriend(@Req() request,
     @Body() dto: { friendNickname: string }) {
+    console.log(dto.friendNickname, request.user.nickname)
     return this.userService.addFriend(request.user.nickname, dto.friendNickname)
   }
 

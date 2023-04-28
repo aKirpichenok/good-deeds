@@ -1,14 +1,4 @@
-import { useContext, useState } from "react";
-import { useRouter } from "next/router";
-import { useLoginMutation } from "../../store/api/AuthController";
-import {
-  addFriend,
-  addId,
-  addNickname,
-  addToken,
-  changeName,
-} from "../../store/reducers/userReducer";
-import { useAppDispatch } from "../../store/hook";
+import { useState } from "react";
 
 import styles from "./index.module.sass";
 import { Input } from "../../ui/src/Input/Input";
@@ -19,8 +9,6 @@ const Login = () => {
   const [loginValue, setLogin] = useState("");
   const [passwordValue, setPassword] = useState("");
   const [error, setError] = useState("");
-  const route = useRouter();
-  const dispatch = useAppDispatch();
   const { loginUser } = useAuth();
 
   const handleSubmit = async (e) => {
@@ -58,3 +46,10 @@ const Login = () => {
 };
 
 export default Login;
+
+export async function getServerSideProps({ req, res }) {
+  console.log("COOKE LOGIN", res.cookie);
+  return {
+    props: {},
+  };
+}

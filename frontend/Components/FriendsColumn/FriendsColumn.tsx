@@ -10,12 +10,14 @@ interface FriendsColumnProps {
   data: IUserWithId[];
   handleDelete: boolean | ((nickname: string) => void);
   emptyDataText: string;
+  headerText: string;
 }
 
 export const FriendsColumn: FC<FriendsColumnProps> = ({
   data,
   handleDelete,
   emptyDataText,
+  headerText,
 }) => {
   return (
     <>
@@ -30,7 +32,7 @@ export const FriendsColumn: FC<FriendsColumnProps> = ({
               marginBottom: "20px",
             }}
           >
-            Друзья:
+            {headerText}
           </p>
           {data?.map((friend) => (
             <FriendCard

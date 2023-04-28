@@ -3,47 +3,34 @@ import withAuth from "../../Components/WithAuth/withAuth";
 
 import styles from "./index.module.sass";
 import { Input } from "../../ui/src/Input/Input";
-import {
-  useDeleteFriendMutation,
-  useGetFriendsQuery,
-  useSearchFriendsQuery,
-} from "../../store/api/UserController";
-import { useEffect, useState } from "react";
+import { useSearchFriendsQuery } from "../../store/api/UserController";
+import { useState } from "react";
 import { FriendsColumn } from "../../Components/FriendsColumn/FriendsColumn";
-import { useAppDispatch, useAppSelector } from "../../store/hook";
-import { deleteFriend } from "../../store/reducers/userReducer";
+import { useAppSelector } from "../../store/hook";
 
-import Cookie from "js-cookie";
-
-const Friends = () => {
-  const { data, refetch, isLoading: isLoadingFriends } = useGetFriendsQuery({});
+const Friends = ({ userFriends: data, token }) => {
   const [searchText, setSearchText] = useState("");
+  const [friends, setFriends] = useState(data);
   const { nickname } = useAppSelector((state) => state.userReducer);
   const { data: findUsers, isLoading } = useSearchFriendsQuery(
-    { nickname: searchText, userNickname: nickname },
+    { nickname: searchText, userNickname: nickname, token },
     {
       refetchOnMountOrArgChange: true,
     },
   );
 
-  const { friends } = useAppSelector((state) => state.userReducer);
-  const dispatch = useAppDispatch();
-
-  const [deleteTrigger] = useDeleteFriendMutation();
-
   const handleDelete = async (nickname) => {
-    const result = await deleteTrigger(
-      JSON.stringify({
-        friendNickname: nickname,
-      }),
-    ).unwrap();
-    dispatch(deleteFriend(friends - 1));
-    refetch();
+    const result = await fetch("http://localhost:5001/users/delete/friend", {
+      method: "POST",
+      body: JSON.stringify({ friendNickname: nickname }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await fetchFriends(token);
+    setFriends(data);
   };
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   return (
     <div className={styles["friends-list"]}>
@@ -57,15 +44,12 @@ const Friends = () => {
         />
       </div>
       <div className={styles["friends-deeds"]}>
-        {isLoadingFriends ? (
-          <p>Loading</p>
-        ) : (
-          <FriendsColumn
-            data={data}
-            handleDelete={handleDelete}
-            emptyDataText="У вас нет друзей"
-          />
-        )}
+        <FriendsColumn
+          data={friends}
+          handleDelete={handleDelete}
+          emptyDataText="У вас нет друзей"
+          headerText="Друзья:"
+        />
         {isLoading ? (
           <p>loading</p>
         ) : (
@@ -73,6 +57,7 @@ const Friends = () => {
             data={findUsers}
             emptyDataText="Никого не нашли"
             handleDelete={false}
+            headerText="Результаты поиска:"
           />
         )}
       </div>
@@ -83,9 +68,26 @@ const Friends = () => {
 export default withAuth(Friends);
 
 export async function getServerSideProps({ req, res }) {
-  const token = Cookie.get("token");
-  res.setHeader("Set-Cookie", `token=${token}`);
+  const cookies = req.headers.cookie.split("; ");
+  const token = cookies[cookies.length - 1].split("=")[1];
+
+  const data = await fetchFriends(token);
+
   return {
-    props: {},
+    props: {
+      userFriends: data,
+      token,
+    },
   };
 }
+
+const fetchFriends = async (token) => {
+  const result = await fetch("http://localhost:5001/users/get/friends", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await result.json();
+  return data;
+};

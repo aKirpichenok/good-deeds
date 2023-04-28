@@ -112,14 +112,12 @@ export class UserService {
     const userFriends: any = await this.userModel.findOne({
       nickname: { $regex: new RegExp(nickname) }
     })
-    console.log(userFriends)
     const friendsDeeds = await userFriends.friends.reduce(async (acc, friend) => {
       const newAcc = await acc
       const friendDeeds = await this.getSelect(friend)
       newAcc.push(...friendDeeds.deeds)
       return acc
     }, [])
-    console.log(friendsDeeds)
     return friendsDeeds
   }
 

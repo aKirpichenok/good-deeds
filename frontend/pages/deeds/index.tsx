@@ -81,3 +81,9 @@ const Deeds = () => {
 };
 
 export default withAuth(Deeds);
+
+export async function getServerSideProps(context) {
+  const token = context.req.cookies.token;
+  console.log("TOKEN DEEDS", token);
+  return { props: {} };
+}

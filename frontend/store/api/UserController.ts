@@ -11,18 +11,11 @@ export const UserController = createApi({
     baseUrl: process.env['NX_API'] || 'http://localhost:5001/users',
     credentials: 'same-origin',
     prepareHeaders: (headers) => {
-      const userToken = localStorage.getItem('token')
-      if (userToken !== '') {
-        headers.set('Authorization', 'Bearer ' + userToken)
-      }
       headers.set('Content-Type', 'application/json');
       return headers;
     },
   }),
   endpoints: (builder) => ({
-    // getAllUsers: builder.query({
-    //   query: (id) => `/${id}`
-    // }),
     getUser: builder.query<IUserWithId, any>({
       query: ({ id }) => `/${id}`
     }),
@@ -35,34 +28,44 @@ export const UserController = createApi({
         }
       }
     }),
-    getFriends: builder.query<IUserWithId[], {}>({
-      query: () => '/get/friends'
-    }),
-
     getFriendsDeed: builder.query<IUserWithId[], {}>({
       query: () => '/get/friends/deeds'
     }),
-    searchFriends: builder.query<IUserWithId[], { nickname: string, userNickname: string }>({
-      query: ({ nickname, userNickname }) => `search/friends?nickname=${nickname}`,
+    searchFriends: builder.query<IUserWithId[], { nickname: string, userNickname: string, token: string }>({
+      query: ({ nickname, userNickname, token }) => {
+        return {
+          url: `search/friends?nickname=${nickname}`,
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      },
       transformResponse: (data: any, meta, { userNickname }) => {
         return data.filter(friend => friend.nickname !== userNickname)
       },
     }),
-    addFriend: builder.mutation<string, string>({
-      query(body) {
+    addFriend: builder.mutation<string, any>({
+      query({ token, friendNickname }) {
         return {
           url: `/add/friend`,
           method: 'POST',
-          body,
+          headers: {
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({ friendNickname }),
         };
       },
     }),
-    deleteFriend: builder.mutation<string, string>({
-      query(body) {
+    deleteFriend: builder.mutation<string, any>({
+      query({ nickname, token }) {
+        console.log(nickname, token)
         return {
           url: `/delete/friend`,
           method: 'POST',
-          body,
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(nickname),
         };
       },
     }),
@@ -80,7 +83,6 @@ export const UserController = createApi({
 export const {
   // useGetAllUsersQuery,
   useGetUserQuery,
-  useGetFriendsQuery,
   useGetFriendsDeedQuery,
   useAddFriendMutation,
   useDeleteFriendMutation,

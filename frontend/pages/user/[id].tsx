@@ -1,58 +1,58 @@
 import { useRouter } from "next/router";
-import {
-  useAddFriendMutation,
-  useGetUserQuery,
-} from "../../store/api/UserController";
+import { useAddFriendMutation } from "../../store/api/UserController";
 import { FC } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/hook";
-import { addFriend } from "../../store/reducers/userReducer";
+import { IUser } from "../../types/user";
 
 interface UserProps {
-  id: string;
+  user: IUser;
+  token: string;
 }
 
-const User: FC<UserProps> = ({ id }) => {
-  const { data: user, isLoading } = useGetUserQuery({ id });
+const User: FC<UserProps> = ({ user, token }) => {
+  console.log("USER", user);
   const [addFriendTrigger] = useAddFriendMutation();
   const router = useRouter();
-  const { friends } = useAppSelector((state) => state.userReducer);
-  const dispatch = useAppDispatch();
 
   const addFriendOne = async () => {
-    const result: any = await addFriendTrigger(
-      JSON.stringify({
-        friendNickname: user.nickname,
-      }),
-    ).unwrap();
-    console.log("RESULT", result);
+    const result: any = await addFriendTrigger({
+      friendNickname: user.nickname,
+      token,
+    }).unwrap();
     router.push("/friends");
-    dispatch(addFriend(friends + 1));
   };
 
   return (
     <>
-      {isLoading ? (
-        <div>loading</div>
-      ) : (
-        <div>
-          <p>Имя: {user.name}</p>
-          <p>Фамилия: {user.female}</p>
-          <p>Никнейм: {user.nickname}</p>
-          <button onClick={addFriendOne}>Добавить в друзья</button>
-        </div>
-      )}
+      <div>
+        <p>Имя: {user.name}</p>
+        <p>Фамилия: {user.female}</p>
+        <p>Никнейм: {user.nickname}</p>
+        <button onClick={addFriendOne}>Добавить в друзья</button>
+      </div>
     </>
   );
 };
 
 export default User;
 
-export async function getServerSideProps(context) {
-  const { id } = context.query;
+export async function getServerSideProps({ req, res, query }) {
+  console.log(query.id);
+  const { id } = query;
+  const cookies = req.headers.cookie.split("; ");
+  const token = cookies[cookies.length - 1].split("=")[1];
+  const result = await fetch(`http://localhost:5001/users/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const user = await result.json();
 
   return {
     props: {
-      id,
+      user,
+      token,
     },
   };
 }
