@@ -7,6 +7,7 @@ import { useSearchFriendsQuery } from "../../store/api/UserController";
 import { useState } from "react";
 import { FriendsColumn } from "../../Components/FriendsColumn/FriendsColumn";
 import { useAppSelector } from "../../store/hook";
+import { fetchFriends } from "../../utils/fetchers/fetchFriends";
 
 const Friends = ({ userFriends: data, token }) => {
   const [searchText, setSearchText] = useState("");
@@ -70,6 +71,7 @@ export default withAuth(Friends);
 export async function getServerSideProps({ req, res }) {
   const cookies = req.headers.cookie.split("; ");
   const token = cookies[cookies.length - 1].split("=")[1];
+  console.log("COOKIES", cookies);
 
   const data = await fetchFriends(token);
 
@@ -80,14 +82,3 @@ export async function getServerSideProps({ req, res }) {
     },
   };
 }
-
-const fetchFriends = async (token) => {
-  const result = await fetch("http://localhost:5001/users/get/friends", {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  const data = await result.json();
-  return data;
-};

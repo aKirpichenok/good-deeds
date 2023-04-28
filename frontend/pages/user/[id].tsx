@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useAddFriendMutation } from "../../store/api/UserController";
 import { FC } from "react";
 import { IUser } from "../../types/user";
+import { fetchUser } from "../../utils/fetchers/fetchUser";
 
 interface UserProps {
   user: IUser;
@@ -9,7 +10,6 @@ interface UserProps {
 }
 
 const User: FC<UserProps> = ({ user, token }) => {
-  console.log("USER", user);
   const [addFriendTrigger] = useAddFriendMutation();
   const router = useRouter();
 
@@ -40,14 +40,7 @@ export async function getServerSideProps({ req, res, query }) {
   const { id } = query;
   const cookies = req.headers.cookie.split("; ");
   const token = cookies[cookies.length - 1].split("=")[1];
-  const result = await fetch(`http://localhost:5001/users/${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  const user = await result.json();
+  const user = fetchUser(token, id);
 
   return {
     props: {

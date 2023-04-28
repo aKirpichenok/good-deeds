@@ -1,9 +1,8 @@
 import Head from "next/head";
-import { FC, ReactNode } from "react";
-
+import { FC, ReactNode, useEffect } from "react";
+import Cookies from "js-cookie";
 import styles from "./MainContainer.module.sass";
 import { Header } from "../../ui/src/Header/Header";
-import { Footer } from "../../ui/src/Footer/Footer";
 
 type MainContainerProps = {
   children: ReactNode;
@@ -11,6 +10,17 @@ type MainContainerProps = {
 };
 
 const MainContainer: FC<MainContainerProps> = ({ children, keywords }) => {
+  useEffect(() => {
+    function handleUnload() {
+      Cookies.remove("token");
+    }
+
+    window.addEventListener("beforeunload", handleUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleUnload);
+    };
+  }, []);
   return (
     <>
       <Head>
@@ -25,7 +35,6 @@ const MainContainer: FC<MainContainerProps> = ({ children, keywords }) => {
         <Header />
         <main className={styles["main"]}>{children}</main>
       </div>
-      {/* <Footer /> */}
     </>
   );
 };

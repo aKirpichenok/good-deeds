@@ -5,12 +5,13 @@ import { useAuth } from "../../../Components/AuthContext/AuthContext";
 
 export const Header = () => {
   const { logout, currentUser } = useAuth();
+  console.log(currentUser);
 
   return (
     <header className={styles.navbar}>
       <NavLink href="/" text="Главная" />
       <NavLink href="/deeds" text="Список добрых дел" />
-      <NavLink href={`/profile`} text="Профиль" />
+      <NavLink href={`/profile/${currentUser}`} text="Профиль" />
       <NavLink href="/friends" text="Друзья" />
       {currentUser ? (
         <button className={styles["logout"]} onClick={logout}>

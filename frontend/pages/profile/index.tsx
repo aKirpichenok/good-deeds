@@ -48,7 +48,6 @@ const Profile = () => {
       editProfile();
       localStorage.setItem("token", result.token);
       dispatch(addId(result.id));
-      // dispatch(addNickname(result.nickname));
     } catch (e) {
       console.log(e);
     }

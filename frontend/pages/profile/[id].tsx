@@ -1,22 +1,22 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import withAuth from "../../Components/WithAuth/withAuth";
 import {
   useChangeUserMutation,
   useDeleteUserMutation,
-  useGetUserQuery,
 } from "../../store/api/UserController";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 
 import styles from "./index.module.sass";
-import { Input } from "../../ui/src/Input/Input";
-import { addId, addNickname } from "../../store/reducers/userReducer";
+import { addId } from "../../store/reducers/userReducer";
 import { DeedItem } from "../../Components/DeedItem/DeedItem";
 import { useRouter } from "next/router";
 import { UserInfo } from "../../Components/UserInfo/userInfo";
+import { fetchUser } from "../../utils/fetchers/fetchUser";
 
-const Profile = () => {
-  const { id, friends } = useAppSelector((state) => state.userReducer);
-  const { data: user, isLoading } = useGetUserQuery({ id, friends });
+import Cookie from "js-cookie";
+
+const Profile = ({ user }) => {
+  console.log(user);
   const [deleteTrigger] = useDeleteUserMutation();
   const router = useRouter();
 
@@ -27,8 +27,7 @@ const Profile = () => {
 
   const deleteProfile = () => {
     deleteTrigger(user._id);
-    localStorage.removeItem("token");
-    router.push("/login");
+    Cookie.router.push("/login");
   };
 
   const editProfile = () => {
@@ -48,7 +47,6 @@ const Profile = () => {
       editProfile();
       localStorage.setItem("token", result.token);
       dispatch(addId(result.id));
-      // dispatch(addNickname(result.nickname));
     } catch (e) {
       console.log(e);
     }
@@ -59,39 +57,39 @@ const Profile = () => {
       <div className={styles["edit"]}>
         <button onClick={editProfile}>Редактировать</button>
       </div>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <div className={styles["left-side"]}>
-            <UserInfo
-              isEdit={isEdit}
-              editProfile={editProfile}
-              submitEdit={handleClick}
-            />
-          </div>
+      <div className={styles["left-side"]}>
+        <UserInfo
+          isEdit={isEdit}
+          editProfile={editProfile}
+          submitEdit={handleClick}
+        />
+      </div>
 
-          <div className={styles["right-side"]}>
-            <span className={styles["highlight"]}>Посты:</span>{" "}
-            <ul>
-              {user?.deeds.map((deed) => (
-                <li key={deed._id}>
-                  <DeedItem deed={deed} delete={false} />
-                </li>
-              ))}
-            </ul>
-          </div>
-          <button className={styles["delete-button"]} onClick={deleteProfile}>
-            Удалить профиль
-          </button>
-        </>
-      )}
+      <div className={styles["right-side"]}>
+        <span className={styles["highlight"]}>Посты:</span>{" "}
+        <ul>
+          {user?.deeds.map((deed) => (
+            <li key={deed._id}>
+              <DeedItem deed={deed} delete={false} />
+            </li>
+          ))}
+        </ul>
+      </div>
+      <button className={styles["delete-button"]} onClick={deleteProfile}>
+        Удалить профиль
+      </button>
     </div>
   );
 };
 
 export default withAuth(Profile);
 
-export async function getServerSideProps(context) {
-  return {};
+export async function getServerSideProps({ req, res, query }) {
+  const { id } = query;
+  const cookies = req.headers.cookie.split("; ");
+  const token = cookies[cookies.length - 1].split("=")[1];
+  const user = await fetchUser(token, id);
+  return {
+    props: { user },
+  };
 }

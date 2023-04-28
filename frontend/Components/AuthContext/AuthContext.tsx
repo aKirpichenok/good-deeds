@@ -6,7 +6,7 @@ import { login } from "../../store/reducers/userReducer";
 import { useLoginMutation } from "../../store/api/AuthController";
 
 type AuthContextType = {
-  currentUser: boolean;
+  currentUser: boolean | string;
   loginUser: (nickname: string, password: string) => void;
   logout: () => void;
 };
@@ -26,7 +26,7 @@ type Props = {
 };
 
 export function AuthProvider({ children }: Props) {
-  const [currentUser, setCurrentUser] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<boolean | string>(false);
   const [loginTrigger, _] = useLoginMutation();
 
   const router = useRouter();
@@ -46,20 +46,8 @@ export function AuthProvider({ children }: Props) {
       Cookie.set("token", result.token, { expires: 7 });
 
       dispatch(login({ ...result }));
-      // const cookieSend = await fetch("http://localhost:5001/auth/setCookie", {
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: `Bearer thisisCookie`,
-      //   },
-      // });
-      // const yap = await cookieSend.text();
-      // const deleteCookie = await fetch(
-      //   "http://localhost:5001/auth/removeCookie",
-      // );
-      // const text = await deleteCookie.text();
-      // console.log(text);
-      setCurrentUser(true);
-      // router.push("/");
+      setCurrentUser(result.id);
+      router.push("/");
     } catch (e) {
       console.log(e);
     }
