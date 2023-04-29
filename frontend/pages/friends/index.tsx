@@ -1,5 +1,5 @@
 import { FriendCard } from "../../Components/FriendCard/FriendCard";
-import withAuth from "../../Components/WithAuth/withAuth";
+// import withAuth from "../../Components/WithAuth/withAuth";
 
 import styles from "./index.module.sass";
 import { Input } from "../../ui/src/Input/Input";
@@ -8,13 +8,14 @@ import { useState } from "react";
 import { FriendsColumn } from "../../Components/FriendsColumn/FriendsColumn";
 import { useAppSelector } from "../../store/hook";
 import { fetchFriends } from "../../utils/fetchers/fetchFriends";
+import { getToken } from "../../utils/cookies/getToken";
 
 const Friends = ({ userFriends: data, token }) => {
   const [searchText, setSearchText] = useState("");
   const [friends, setFriends] = useState(data);
   const { nickname } = useAppSelector((state) => state.userReducer);
   const { data: findUsers, isLoading } = useSearchFriendsQuery(
-    { nickname: searchText, userNickname: nickname, token },
+    { nickname: searchText },
     {
       refetchOnMountOrArgChange: true,
     },
@@ -66,12 +67,10 @@ const Friends = ({ userFriends: data, token }) => {
   );
 };
 
-export default withAuth(Friends);
+export default Friends;
 
 export async function getServerSideProps({ req, res }) {
-  const cookies = req.headers.cookie.split("; ");
-  const token = cookies[cookies.length - 1].split("=")[1];
-  console.log("COOKIES", cookies);
+  const token = getToken(req);
 
   const data = await fetchFriends(token);
 

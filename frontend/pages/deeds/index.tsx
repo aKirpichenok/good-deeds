@@ -1,23 +1,21 @@
 import { useState } from "react";
 import { DeedList } from "../../Components/DeedList/DeedList";
-import withAuth from "../../Components/WithAuth/withAuth";
 
 import styles from "./Index.module.sass";
 import Modal from "../../ui/src/Modal/Modal";
 import { DeedModal } from "../../Components/DeedModal/DeedModal";
 import { useCreateDeedMutation } from "../../store/api/DeedsController";
-import { useAppDispatch, useAppSelector } from "../../store/hook";
-import { addDeeds } from "../../store/reducers/userReducer";
+import { getId } from "../../utils/cookies/getId";
+import { fetchUser } from "../../utils/fetchers/fetchUser";
+import { getToken } from "../../utils/cookies/getToken";
 
-const Deeds = () => {
+const Deeds = ({ nickname }) => {
   const [toggler, setToggler] = useState(0);
   const [typeList, setTypeList] = useState("own");
+
   const [isAdd, setIsAdd] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-
-  const { nickname } = useAppSelector((state) => state.userReducer);
-  const dispatch = useAppDispatch();
 
   const [createDeed] = useCreateDeedMutation();
 
@@ -35,7 +33,6 @@ const Deeds = () => {
           nickname,
         }),
       ).unwrap();
-      dispatch(addDeeds(result.deeds));
       setTitle("");
       setDescription("");
       setIsAdd((prev) => !prev);
@@ -80,10 +77,15 @@ const Deeds = () => {
   );
 };
 
-export default withAuth(Deeds);
+export default Deeds;
 
-export async function getServerSideProps(context) {
-  const token = context.req.cookies.token;
-  console.log("TOKEN DEEDS", token);
-  return { props: {} };
+export async function getServerSideProps({ req, res }) {
+  const id = getId(req);
+  const token = getToken(req);
+  const { nickname } = await fetchUser(token, id);
+  return {
+    props: {
+      nickname,
+    },
+  };
 }

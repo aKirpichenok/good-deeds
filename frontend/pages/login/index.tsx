@@ -5,11 +5,12 @@ import { Input } from "../../ui/src/Input/Input";
 import Link from "next/link";
 import { useAuth } from "../../Components/AuthContext/AuthContext";
 
+import Cookie from "js-cookie";
+
 const Login = () => {
   const [loginValue, setLogin] = useState("");
   const [passwordValue, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const { loginUser } = useAuth();
+  const { loginUser, error } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,10 +47,3 @@ const Login = () => {
 };
 
 export default Login;
-
-export async function getServerSideProps({ req, res }) {
-  console.log("COOKE LOGIN", res.cookie);
-  return {
-    props: {},
-  };
-}

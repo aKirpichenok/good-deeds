@@ -15,7 +15,8 @@ export class DeedService {
   ) { }
 
   async create(dto: CreateDeedDto): Promise<Deed> {
-    const createdDeed = await this.deedModel.create({ ...dto, date: new Date() })
+    console.log(dto)
+    const createdDeed: any = await this.deedModel.create({ ...dto, date: new Date() })
     const user: any = await this.userModel.findOne({
       nickname: { $regex: new RegExp(dto.nickname) }
     })

@@ -6,7 +6,6 @@ import * as jwt from 'jsonwebtoken';
 @Injectable()
 export class CreateMiddleware implements NestMiddleware {
   async use(req: Request & any, res: Response, next: NextFunction) {
-    // future features
     next();
   }
 }

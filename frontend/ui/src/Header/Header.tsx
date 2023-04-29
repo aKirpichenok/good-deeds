@@ -5,7 +5,6 @@ import { useAuth } from "../../../Components/AuthContext/AuthContext";
 
 export const Header = () => {
   const { logout, currentUser } = useAuth();
-  console.log(currentUser);
 
   return (
     <header className={styles.navbar}>

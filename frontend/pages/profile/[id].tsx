@@ -1,33 +1,26 @@
 import { useState } from "react";
-import withAuth from "../../Components/WithAuth/withAuth";
 import {
   useChangeUserMutation,
   useDeleteUserMutation,
 } from "../../store/api/UserController";
-import { useAppDispatch, useAppSelector } from "../../store/hook";
 
 import styles from "./index.module.sass";
-import { addId } from "../../store/reducers/userReducer";
 import { DeedItem } from "../../Components/DeedItem/DeedItem";
-import { useRouter } from "next/router";
 import { UserInfo } from "../../Components/UserInfo/userInfo";
 import { fetchUser } from "../../utils/fetchers/fetchUser";
 
 import Cookie from "js-cookie";
+import { getToken } from "../../utils/cookies/getToken";
 
-const Profile = ({ user }) => {
-  console.log(user);
+const Profile = ({ user, token, id }) => {
   const [deleteTrigger] = useDeleteUserMutation();
-  const router = useRouter();
-
   const [changeTrigger] = useChangeUserMutation();
-  const dispatch = useAppDispatch();
 
+  const [state, setState] = useState(user);
   const [isEdit, setIsEdit] = useState(false);
 
   const deleteProfile = () => {
     deleteTrigger(user._id);
-    Cookie.router.push("/login");
   };
 
   const editProfile = () => {
@@ -45,13 +38,17 @@ const Profile = ({ user }) => {
         }),
       ).unwrap();
       editProfile();
-      localStorage.setItem("token", result.token);
-      dispatch(addId(result.id));
+      const data = await fetchUser(token, id);
+      setState(data);
+      Cookie.set("token", result.token, {
+        expires: 1,
+        secure: true,
+        httpOnly: true,
+      });
     } catch (e) {
       console.log(e);
     }
   };
-
   return (
     <div className={styles["profile-page"]}>
       <div className={styles["edit"]}>
@@ -59,6 +56,7 @@ const Profile = ({ user }) => {
       </div>
       <div className={styles["left-side"]}>
         <UserInfo
+          user={state}
           isEdit={isEdit}
           editProfile={editProfile}
           submitEdit={handleClick}
@@ -82,14 +80,13 @@ const Profile = ({ user }) => {
   );
 };
 
-export default withAuth(Profile);
+export default Profile;
 
 export async function getServerSideProps({ req, res, query }) {
   const { id } = query;
-  const cookies = req.headers.cookie.split("; ");
-  const token = cookies[cookies.length - 1].split("=")[1];
+  const token = getToken(req);
   const user = await fetchUser(token, id);
   return {
-    props: { user },
+    props: { user, token, id },
   };
 }

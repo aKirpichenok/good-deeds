@@ -10,17 +10,17 @@ type MainContainerProps = {
 };
 
 const MainContainer: FC<MainContainerProps> = ({ children, keywords }) => {
-  useEffect(() => {
-    function handleUnload() {
-      Cookies.remove("token");
-    }
+  // useEffect(() => {
+  //   function handleUnload() {
+  //     Cookies.remove("token");
+  //   }
 
-    window.addEventListener("beforeunload", handleUnload);
+  //   window.addEventListener("beforeunload", handleUnload);
 
-    return () => {
-      window.removeEventListener("beforeunload", handleUnload);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleUnload);
+  //   };
+  // }, []);
   return (
     <>
       <Head>

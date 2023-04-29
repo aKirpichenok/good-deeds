@@ -1,8 +1,10 @@
 import { useRouter } from "next/router";
 import { useAddFriendMutation } from "../../store/api/UserController";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { IUser } from "../../types/user";
 import { fetchUser } from "../../utils/fetchers/fetchUser";
+import { getToken } from "../../utils/cookies/getToken";
+import Alert from "../../ui/src/Alert/Alert";
 
 interface UserProps {
   user: IUser;
@@ -11,24 +13,50 @@ interface UserProps {
 
 const User: FC<UserProps> = ({ user, token }) => {
   const [addFriendTrigger] = useAddFriendMutation();
+  const [error, setError] = useState<{
+    isError: boolean;
+    message: string;
+    type: "warning" | "error" | "success";
+  }>({
+    isError: false,
+    message: "",
+    type: "warning",
+  });
   const router = useRouter();
 
+  const closeError = () => {
+    setError((prev) => ({ ...prev, isError: false }));
+  };
+
   const addFriendOne = async () => {
-    const result: any = await addFriendTrigger({
-      friendNickname: user.nickname,
-      token,
-    }).unwrap();
-    router.push("/friends");
+    try {
+      const result: any = await addFriendTrigger({
+        friendNickname: user.nickname,
+        token,
+      }).unwrap();
+      router.push("/friends");
+    } catch (e) {
+      setError((prev) => ({
+        ...prev,
+        isError: true,
+        message: e.data.message,
+        type: "error",
+      }));
+    }
   };
 
   return (
     <>
-      <div>
-        <p>Имя: {user.name}</p>
-        <p>Фамилия: {user.female}</p>
-        <p>Никнейм: {user.nickname}</p>
-        <button onClick={addFriendOne}>Добавить в друзья</button>
-      </div>
+      {error.isError ? (
+        <Alert message={error.message} type={error.type} onClose={closeError} />
+      ) : (
+        <div>
+          <p>Имя: {user.name}</p>
+          <p>Фамилия: {user.female}</p>
+          <p>Никнейм: {user.nickname}</p>
+          <button onClick={addFriendOne}>Добавить в друзья</button>
+        </div>
+      )}
     </>
   );
 };
@@ -36,11 +64,9 @@ const User: FC<UserProps> = ({ user, token }) => {
 export default User;
 
 export async function getServerSideProps({ req, res, query }) {
-  console.log(query.id);
   const { id } = query;
-  const cookies = req.headers.cookie.split("; ");
-  const token = cookies[cookies.length - 1].split("=")[1];
-  const user = fetchUser(token, id);
+  const token = getToken(req);
+  const user = await fetchUser(token, id);
 
   return {
     props: {

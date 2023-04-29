@@ -4,14 +4,14 @@ import { DeedItem } from "../DeedItem/DeedItem";
 
 import styles from "./DeedList.module.sass";
 
-export const FriendsDeeds = () => {
+export const FriendsDeeds = ({ isAdd }) => {
   const [deeds, setDeeds] = useState([]);
   const { data, isLoading, refetch } = useGetFriendsDeedQuery({});
 
   useEffect(() => {
-    setDeeds(data);
     refetch();
-  }, [data]);
+    setDeeds(data);
+  }, [isAdd]);
 
   return (
     <>
@@ -19,11 +19,15 @@ export const FriendsDeeds = () => {
         <div>loading</div>
       ) : (
         <>
-          {deeds?.map((deed) => (
-            <li key={deed["_id"]} className={styles["deeds__item"]}>
-              <DeedItem deed={deed} delete={false} refetch={refetch} />
-            </li>
-          ))}
+          {deeds?.length == 0 ? (
+            <span>Пусто</span>
+          ) : (
+            deeds?.map((deed) => (
+              <li key={deed["_id"]} className={styles["deeds__item"]}>
+                <DeedItem deed={deed} delete={false} refetch={refetch} />
+              </li>
+            ))
+          )}
         </>
       )}
     </>

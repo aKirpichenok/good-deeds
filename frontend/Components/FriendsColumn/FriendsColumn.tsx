@@ -20,7 +20,7 @@ export const FriendsColumn: FC<FriendsColumnProps> = ({
   headerText,
 }) => {
   return (
-    <>
+    <div>
       {data?.length === 0 ? (
         <p>{emptyDataText}</p>
       ) : (
@@ -43,6 +43,6 @@ export const FriendsColumn: FC<FriendsColumnProps> = ({
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 };

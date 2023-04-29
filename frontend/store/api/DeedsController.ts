@@ -23,7 +23,9 @@ export const DeedsController = createApi({
       query: (id) => `/${id}`,
     }),
     createDeed: builder.mutation<any, string>({
+
       query(body) {
+        console.log(body)
         return {
           url: `/create`,
           method: 'POST',

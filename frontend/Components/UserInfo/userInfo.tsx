@@ -1,50 +1,49 @@
-import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/hook";
+import { FC, useState } from "react";
 import { Input } from "../../ui/src/Input/Input";
 
 import styles from "./userInfo.module.sass";
-import {
-  changeFemale,
-  changeName,
-  changeNickname,
-} from "../../store/reducers/userReducer";
+import { IUserWithId } from "../FriendsColumn/FriendsColumn";
 
-export const UserInfo = ({ isEdit, editProfile, submitEdit }) => {
-  const { name, female, nickname, friends } = useAppSelector(
-    (state) => state.userReducer,
-  );
-  const [newName, setName] = useState(name);
-  const [newFemale, setFemale] = useState(female);
-  const [newNickname, setNickname] = useState(nickname);
+interface UserInfoProps {
+  isEdit: boolean;
+  editProfile: () => void;
+  submitEdit: any;
+  user: IUserWithId;
+}
 
-  const dispatch = useAppDispatch();
+export const UserInfo: FC<UserInfoProps> = ({
+  isEdit,
+  editProfile,
+  submitEdit,
+  user,
+}) => {
+  const [newName, setName] = useState(user.name);
+  const [newFemale, setFemale] = useState(user.female);
+  const [newNickname, setNickname] = useState(user.nickname);
 
   const arr = [
     {
       headerValue: "Имя",
       value: newName,
       callback: (e) => setName(e.target.value),
-      oldValue: name,
+      oldValue: user.name,
     },
     {
       headerValue: "Фамилия",
       value: newFemale,
       callback: (e) => setFemale(e.target.value),
-      oldValue: female,
+      oldValue: user.female,
     },
     {
       headerValue: "Никнейм",
       value: newNickname,
       callback: (e) => setNickname(e.target.value),
-      oldValue: nickname,
+      oldValue: user.nickname,
     },
   ];
 
   const handleSave = () => {
     submitEdit({ newName, newFemale, newNickname });
-    dispatch(changeName(newName));
-    dispatch(changeFemale(newFemale));
-    dispatch(changeNickname(newNickname));
   };
 
   return (
@@ -60,15 +59,15 @@ export const UserInfo = ({ isEdit, editProfile, submitEdit }) => {
             key={index}
           />
         ) : (
-          <>
+          <div className={styles["fields-container"]}>
             <h2>{field.headerValue}</h2>
             <span>{field.oldValue}</span>
-          </>
+          </div>
         ),
       )}
       <h2 className={styles["profile-friends"]}>
         <span className={styles["highlight"]}>Друзья:</span>{" "}
-        <span className={styles["result"]}>{friends}</span>
+        <span className={styles["result"]}>{user?.friends?.length || 0}</span>
       </h2>
       {isEdit && (
         <div className={styles["buttons-edit"]}>
