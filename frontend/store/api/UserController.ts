@@ -33,15 +33,14 @@ export const UserController = createApi({
     getFriendsDeed: builder.query<IUserWithId[], {}>({
       query: () => '/get/friends/deeds'
     }),
-    searchFriends: builder.query<IUserWithId[], { nickname: string }>({
-      query: ({ nickname }) => {
+    searchFriends: builder.query<IUserWithId[], { nickname: string, friendsId: string[] }>({
+      query: ({ nickname, friendsId }) => {
         return {
           url: `search/friends?nickname=${nickname}`,
         }
       },
-      transformResponse: (data: any, meta, args) => {
-        console.log(data)
-        return data.filter(friend => friend._id !== Cookie.get('id'))
+      transformResponse: (data: any, meta, { friendsId }) => {
+        return data.filter(friend => friend._id !== Cookie.get('id') && !friendsId.includes(friend.nickname))
       },
     }),
     addFriend: builder.mutation<string, any>({

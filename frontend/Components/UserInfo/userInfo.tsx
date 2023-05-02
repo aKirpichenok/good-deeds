@@ -59,7 +59,7 @@ export const UserInfo: FC<UserInfoProps> = ({
             key={index}
           />
         ) : (
-          <div className={styles["fields-container"]}>
+          <div className={styles["fields-container"]} key={index}>
             <h2>{field.headerValue}</h2>
             <span>{field.oldValue}</span>
           </div>
@@ -74,7 +74,9 @@ export const UserInfo: FC<UserInfoProps> = ({
           <button className={styles["cancel"]} onClick={editProfile}>
             Отмена
           </button>
-          <button onClick={handleSave}>Сохранить</button>
+          <button className={styles["save"]} onClick={handleSave}>
+            Сохранить
+          </button>
         </div>
       )}
     </>

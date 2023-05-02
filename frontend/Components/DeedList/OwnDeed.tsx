@@ -14,7 +14,6 @@ export const OwnDeeds: FC<OwnDeedsProps> = ({ isAdd }) => {
   useEffect(() => {
     refetch();
   }, [isAdd]);
-  console.log(data);
   return (
     <>
       {isLoading ? (

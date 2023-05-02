@@ -40,7 +40,7 @@ const User: FC<UserProps> = ({ user, token }) => {
         ...prev,
         isError: true,
         message: e.data.message,
-        type: "error",
+        type: "warning",
       }));
     }
   };

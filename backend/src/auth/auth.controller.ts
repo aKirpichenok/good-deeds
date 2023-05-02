@@ -13,11 +13,9 @@ export class AuthController {
   @Post('/login')
   async login(@Body() userDto: CreateUserDto, @Res() res, @Req() req) {
     const user: any = await this.authService.login(userDto)
-    res.cookie('token', user.token, {
-      maxAge: 3600,
-      secure: true,
-      httpOnly: true,
-    })
+    // res.cookies('tokenbroken', user.token, {
+    //   maxAge: 360000,
+    // })
     res.status(200).send(user)
   }
 

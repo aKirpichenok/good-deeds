@@ -1,21 +1,16 @@
-import { FriendCard } from "../../Components/FriendCard/FriendCard";
-// import withAuth from "../../Components/WithAuth/withAuth";
-
 import styles from "./index.module.sass";
 import { Input } from "../../ui/src/Input/Input";
 import { useSearchFriendsQuery } from "../../store/api/UserController";
 import { useState } from "react";
 import { FriendsColumn } from "../../Components/FriendsColumn/FriendsColumn";
-import { useAppSelector } from "../../store/hook";
 import { fetchFriends } from "../../utils/fetchers/fetchFriends";
 import { getToken } from "../../utils/cookies/getToken";
 
-const Friends = ({ userFriends: data, token }) => {
+const Friends = ({ userFriends: data, token, friendsId }) => {
   const [searchText, setSearchText] = useState("");
   const [friends, setFriends] = useState(data);
-  const { nickname } = useAppSelector((state) => state.userReducer);
   const { data: findUsers, isLoading } = useSearchFriendsQuery(
-    { nickname: searchText },
+    { nickname: searchText, friendsId },
     {
       refetchOnMountOrArgChange: true,
     },
@@ -30,6 +25,8 @@ const Friends = ({ userFriends: data, token }) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    const text = await result.json();
+    console.log("RESULT", text);
     const data = await fetchFriends(token);
     setFriends(data);
   };
@@ -73,11 +70,13 @@ export async function getServerSideProps({ req, res }) {
   const token = getToken(req);
 
   const data = await fetchFriends(token);
+  const friendsId = data.reduce((acc, friend) => [...acc, friend.nickname], []);
 
   return {
     props: {
       userFriends: data,
       token,
+      friendsId,
     },
   };
 }

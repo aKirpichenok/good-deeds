@@ -42,8 +42,8 @@ const Profile = ({ user, token, id }) => {
       setState(data);
       Cookie.set("token", result.token, {
         expires: 1,
-        secure: true,
-        httpOnly: true,
+        // secure: true,
+        // httpOnly: true,
       });
     } catch (e) {
       console.log(e);
@@ -86,6 +86,7 @@ export async function getServerSideProps({ req, res, query }) {
   const { id } = query;
   const token = getToken(req);
   const user = await fetchUser(token, id);
+  console.log("USER", user);
   return {
     props: { user, token, id },
   };
