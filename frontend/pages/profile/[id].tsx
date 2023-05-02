@@ -86,7 +86,6 @@ export async function getServerSideProps({ req, res, query }) {
   const { id } = query;
   const token = getToken(req);
   const user = await fetchUser(token, id);
-  console.log("USER", user);
   return {
     props: { user, token, id },
   };

@@ -4,7 +4,7 @@ import { IDeed } from '../../types/deed';
 export const DeedsController = createApi({
   reducerPath: 'DeedsController',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env['NX_API'] || 'http://localhost:5001/deeds',
+    baseUrl: process.env['API'] || 'http://localhost:5001/deeds',
     credentials: 'same-origin',
     prepareHeaders: (headers) => {
       const userToken = localStorage.getItem('token')

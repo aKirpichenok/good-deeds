@@ -8,7 +8,7 @@ import Cookie from 'js-cookie'
 export const UserController = createApi({
   reducerPath: 'UserController',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env['NX_API'] || 'http://localhost:5001/users',
+    baseUrl: process.env['API'] || 'http://localhost:5001/users',
     credentials: 'same-origin',
     prepareHeaders: (headers) => {
       const token = Cookie.get('token')

@@ -4,7 +4,7 @@ import { IUser } from '../../types/user';
 export const AuthController = createApi({
   reducerPath: 'AuthController',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env['NX_API'] || 'http://localhost:5001/auth',
+    baseUrl: process.env['API'] || 'http://localhost:5001/auth',
     credentials: 'same-origin',
     prepareHeaders: (headers) => {
       headers.set('Content-Type', 'application/json');
