@@ -7,7 +7,7 @@ import { IUserWithId } from "../FriendsColumn/FriendsColumn";
 interface UserInfoProps {
   isEdit: boolean;
   editProfile: () => void;
-  submitEdit: any;
+  submitEdit: (...args) => void;
   user: IUserWithId;
 }
 

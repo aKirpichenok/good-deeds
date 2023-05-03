@@ -22,7 +22,7 @@ export const DeedsController = createApi({
     getOneDeed: builder.query<IDeed, string>({
       query: (id) => `/${id}`,
     }),
-    createDeed: builder.mutation<any, string>({
+    createDeed: builder.mutation<IDeed, string>({
 
       query(body) {
         return {

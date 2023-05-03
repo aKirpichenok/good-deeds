@@ -14,21 +14,16 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   static getDerivedStateFromError(error) {
-    // Обновляем состояние, чтобы при следующем рендере
-    // показать фоллбек UI.
     return { hasError: true };
   }
 
-  componentDidCatch(error, errorInfo) {
-    // Здесь можно отправить информацию об ошибке на сервер
-  }
+  componentDidCatch(error, errorInfo) {}
 
   render() {
     if (this.state.hasError) {
       return <ErrorUI />;
     }
 
-    // Если ошибок нет, просто рендерим дочерние компоненты
     return this.props.children;
   }
 }

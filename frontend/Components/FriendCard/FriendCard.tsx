@@ -2,7 +2,6 @@ import Link from "next/link";
 import styles from "./FriendCard.module.sass";
 import { FC } from "react";
 import { IUser } from "../../types/user";
-import { useAppDispatch } from "../../store/hook";
 
 interface FriendCardProps extends IUser {
   _id: string;

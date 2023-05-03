@@ -18,7 +18,7 @@ export const UserController = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getUser: builder.query<IUserWithId, any>({
+    getUser: builder.query<IUserWithId, {}>({
       query: () => `/${Cookie.get('id')}`
     }),
     changeUser: builder.mutation<IUser, string>({
@@ -43,7 +43,7 @@ export const UserController = createApi({
         return data.filter(friend => friend._id !== Cookie.get('id') && !friendsId.includes(friend.nickname))
       },
     }),
-    addFriend: builder.mutation<string, any>({
+    addFriend: builder.mutation<string, { token: string; friendNickname: string }>({
       query({ token, friendNickname }) {
         return {
           url: `/add/friend`,
@@ -52,7 +52,7 @@ export const UserController = createApi({
         };
       },
     }),
-    deleteFriend: builder.mutation<string, any>({
+    deleteFriend: builder.mutation<string, { token: string; nickname: string }>({
       query({ nickname, token }) {
         return {
           url: `/delete/friend`,

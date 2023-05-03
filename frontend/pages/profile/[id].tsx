@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import {
   useChangeUserMutation,
   useDeleteUserMutation,
@@ -11,8 +11,15 @@ import { fetchUser } from "../../utils/fetchers/fetchUser";
 
 import Cookie from "js-cookie";
 import { getToken } from "../../utils/cookies/getToken";
+import { IUserWithId } from "../../Components/FriendsColumn/FriendsColumn";
 
-const Profile = ({ user, token, id }) => {
+interface ProfileProps {
+  user: IUserWithId;
+  token: string;
+  id: string;
+}
+
+const Profile: FC<ProfileProps> = ({ user, token, id }) => {
   const [deleteTrigger] = useDeleteUserMutation();
   const [changeTrigger] = useChangeUserMutation();
 

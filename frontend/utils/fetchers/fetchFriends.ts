@@ -1,4 +1,6 @@
-export const fetchFriends = async (token) => {
+import { IUser } from "../../types/user";
+
+export const fetchFriends = async (token): Promise<IUser[]> => {
   const result = await fetch("http://localhost:5001/users/get/friends", {
     headers: {
       "Content-Type": "application/json",

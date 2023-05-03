@@ -1,4 +1,6 @@
-export const fetchFriendDeeds = async (token) => {
+import { IDeed } from "../../types/deed";
+
+export const fetchFriendDeeds = async (token): Promise<IDeed[]> => {
   const result = await fetch(`http://localhost:5001/users/get/friends/deeds`, {
     method: "GET",
     headers: {

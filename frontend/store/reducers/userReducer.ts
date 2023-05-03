@@ -1,11 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { IUser } from '../../types/user'
 import { HYDRATE } from 'next-redux-wrapper'
 import { IDeed } from '../../types/deed'
-import { IUserWithId } from '../../Components/FriendsColumn/FriendsColumn'
 
 
-const initialState: any = {
+const initialState = {
   name: '',
   female: '',
   nickname: '',

@@ -7,7 +7,7 @@ import { DeedItem } from "../DeedItem/DeedItem";
 
 interface DeedListTypes {
   type: string;
-  flag: any;
+  flag: boolean;
 }
 
 export const DeedList: FC<DeedListTypes> = ({ type, flag }) => {

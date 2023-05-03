@@ -22,14 +22,14 @@ export class AuthService {
   constructor(private userService: UserService,
     private jwtService: JwtService) { }
 
-  async login(userDto: CreateUserDto) {
+  async login(userDto: CreateUserDto): Promise<ReturnProps | User> {
     const user: any = await this.validateUser(userDto)
     const result = await this.generateToken(user)
     return result
 
   }
 
-  async registration(userDto: CreateUserDto) {
+  async registration(userDto: CreateUserDto): Promise<ReturnProps | User> {
     const candidate = await this.userService.findByNickname(userDto.nickname)
     if (candidate) {
       throw new HttpException('Пользователь с таким никнеймом уже существует', HttpStatus.BAD_REQUEST)

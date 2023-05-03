@@ -5,8 +5,6 @@ import { Input } from "../../ui/src/Input/Input";
 import Link from "next/link";
 import { useAuth } from "../../Components/AuthContext/AuthContext";
 
-import Cookie from "js-cookie";
-
 const Login = () => {
   const [loginValue, setLogin] = useState("");
   const [passwordValue, setPassword] = useState("");

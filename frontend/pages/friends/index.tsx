@@ -1,12 +1,18 @@
 import styles from "./index.module.sass";
 import { Input } from "../../ui/src/Input/Input";
 import { useSearchFriendsQuery } from "../../store/api/UserController";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { FriendsColumn } from "../../Components/FriendsColumn/FriendsColumn";
 import { fetchFriends } from "../../utils/fetchers/fetchFriends";
 import { getToken } from "../../utils/cookies/getToken";
 
-const Friends = ({ userFriends: data, token, friendsId }) => {
+interface FriendsProps {
+  userFriends: any;
+  token: string;
+  friendsId: string[];
+}
+
+const Friends: FC<FriendsProps> = ({ userFriends: data, token, friendsId }) => {
   const [searchText, setSearchText] = useState("");
   const [friends, setFriends] = useState(data);
   const { data: findUsers, isLoading } = useSearchFriendsQuery(

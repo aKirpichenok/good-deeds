@@ -4,7 +4,7 @@ import { DeedItem } from "../DeedItem/DeedItem";
 
 import styles from "./DeedList.module.sass";
 
-export const FriendsDeeds = ({ isAdd }) => {
+export const FriendsDeeds = ({ isAdd }: { isAdd: boolean }) => {
   const [deeds, setDeeds] = useState([]);
   const { data, isLoading, refetch } = useGetFriendsDeedQuery({});
 
