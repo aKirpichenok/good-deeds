@@ -1,0 +1,70 @@
+// .user-page
+//   padding: 30px 30px 10px 50px
+//   display: flex
+//   flex-direction: column
+//   align-items: center
+
+//   &__main
+//     width: 30%
+//     p
+//       display: flex
+//       margin-bottom: 20px
+//       font-size: 18px
+//       border-bottom: 2px solid green
+
+//       .headers
+//         font-size: 24px
+//         flex: 0 1 50%
+
+//   &__additional
+//     display: flex
+//     span
+//       display: inline block
+
+$orange: #ff8c00
+
+$light-gray: #f5f5f5
+$darker-gray: #f5f5f5
+$dark-gray: #333
+
+.user-page
+  margin: 20px
+
+  &__main
+    padding: 10px
+    border: 6px solid $darker-gray
+    & p
+      margin: 5px 0
+      font-size: 1.2rem
+      font-weight: 500
+
+      & .headers
+        font-weight: 700
+        color: $orange
+
+  &__additional
+    padding: 10px
+    background-color: $light-gray
+    display: flex
+    gap: 20px
+
+    span
+      display: block
+      margin-bottom: 5px
+      font-size: 1.2rem
+      font-weight: 500
+      color: $dark-gray
+      span
+        display: inline
+
+  button
+    padding: 10px
+    background-color: $orange
+    color: white
+    border: none
+    border-radius: 5px
+    cursor: pointer
+    transition: background-color 0.3s ease-out
+
+    &:hover
+      background-color: darken($orange, 10%)

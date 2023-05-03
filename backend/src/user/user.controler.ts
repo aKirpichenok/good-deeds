@@ -49,6 +49,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get('/get/friends')
   getFriends(@Req() req) {
+    console.log(req.cookies)
     return this.userService.getFriends(req.user.nickname)
   }
 

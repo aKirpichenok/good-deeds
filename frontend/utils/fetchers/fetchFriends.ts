@@ -4,6 +4,7 @@ export const fetchFriends = async (token) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
+    credentials: "include"
   });
   const data = await result.json();
   return data;

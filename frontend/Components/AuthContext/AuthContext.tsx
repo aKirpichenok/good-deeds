@@ -53,8 +53,12 @@ export function AuthProvider({ children }: Props) {
       const result = await loginTrigger(
         JSON.stringify({ nickname: nickname, password }),
       ).unwrap();
-      Cookie.set("token", result.token, { expires: 1 });
-      Cookie.set("id", result.id, { expires: 1 });
+      Cookie.set("token", result.token, {
+        expires: new Date(Date.now() + 5 * 60 * 1000),
+      }); // 5 minute
+      Cookie.set("id", result.id, {
+        expires: new Date(Date.now() + 5 * 60 * 1000),
+      }); // 5 minute
       dispatch(login({ ...result }));
       setCurrentUser(result.id);
       router.push("/");
