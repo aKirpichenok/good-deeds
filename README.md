@@ -2,7 +2,7 @@
 
 ## Frontend: TS, React, NextJS, Redux, RTK query
 
-## Backend: TS, NestJs, MongoDB
+## Backend: TS, NestJs, MongoDB, Swagger
 
 ### Для запуска в Docker:
 
