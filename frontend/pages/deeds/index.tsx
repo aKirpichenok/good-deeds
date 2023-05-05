@@ -8,6 +8,7 @@ import { useCreateDeedMutation } from "../../store/api/DeedsController";
 import { getId } from "../../utils/cookies/getId";
 import { fetchUser } from "../../utils/fetchers/fetchUser";
 import { getToken } from "../../utils/cookies/getToken";
+import { GetServerSideProps } from "next";
 
 const Deeds = ({ nickname }) => {
   const [toggler, setToggler] = useState(0);
