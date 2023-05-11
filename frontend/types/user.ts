@@ -1,3 +1,4 @@
+import { IUserWithId } from "../Components/FriendsColumn/FriendsColumn"
 import { IDeed } from "./deed"
 
 export interface IUser {
@@ -5,7 +6,7 @@ export interface IUser {
   password: string
   female: string
   nickname: string
-  friends: string[]
+  friends: IUserWithId[]
   deeds: IDeed[]
   token: string
   id: string
