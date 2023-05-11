@@ -8,7 +8,6 @@ import Alert from "../../ui/src/Alert/Alert";
 
 import styles from "./[id].module.sass";
 import { getId } from "../../utils/cookies/getId";
-import { fetchFriends } from "../../utils/fetchers/fetchFriends";
 
 interface UserProps {
   user: IUser;
@@ -91,9 +90,8 @@ export async function getServerSideProps({ req, res, query }) {
   const { id } = query;
   const token = getToken(req);
   const user = await fetchUser(token, id);
-  const friends = await fetchFriends(token);
-  console.log(friends, user._id);
-  const isFriend = !friends.find((friend) => friend._id == user._id);
+  const userId = getId(req);
+  const isFriend = !!user.friends.find((friend) => friend._id == userId);
 
   return {
     props: {

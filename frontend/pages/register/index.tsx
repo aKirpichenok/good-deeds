@@ -24,8 +24,6 @@ const Register = () => {
         JSON.stringify({ nickname, password, name, female }),
       ).unwrap();
       if (result) {
-        localStorage.setItem("token", result.token);
-        localStorage.setItem("nickname", result.nickname);
         dispatch(addId(result.id));
         dispatch(addNickname(result.nickname));
         route.push("/");
