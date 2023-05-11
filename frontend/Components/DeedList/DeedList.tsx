@@ -11,13 +11,10 @@ interface DeedListTypes {
 }
 
 export const DeedList: FC<DeedListTypes> = ({ type, flag }) => {
-  return (
-    <ul className={styles["deeds__list"]}>
-      {type === "own" ? (
-        <OwnDeeds isAdd={flag} />
-      ) : (
-        <FriendsDeeds isAdd={flag} />
-      )}
-    </ul>
-  );
+  switch (type) {
+    case "own":
+      return <OwnDeeds isAdd={flag} />;
+    case "friends":
+      return <FriendsDeeds isAdd={flag} />;
+  }
 };
