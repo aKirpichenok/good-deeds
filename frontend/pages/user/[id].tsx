@@ -7,13 +7,16 @@ import { getToken } from "../../utils/cookies/getToken";
 import Alert from "../../ui/src/Alert/Alert";
 
 import styles from "./[id].module.sass";
+import { getId } from "../../utils/cookies/getId";
+import { fetchFriends } from "../../utils/fetchers/fetchFriends";
 
 interface UserProps {
   user: IUser;
   token: string;
+  isFriend?: boolean;
 }
 
-const User: FC<UserProps> = ({ user, token }) => {
+const User: FC<UserProps> = ({ user, token, isFriend }) => {
   const [addFriendTrigger] = useAddFriendMutation();
   const [error, setError] = useState<{
     isError: boolean;
@@ -73,7 +76,9 @@ const User: FC<UserProps> = ({ user, token }) => {
               Кол-во постов: <span>{user.deeds.length || 0}</span>
             </span>
           </div>
-          <button onClick={addFriendOne}>Добавить в друзья</button>
+          {isFriend && (
+            <button onClick={addFriendOne}>Добавить в друзья</button>
+          )}
         </div>
       )}
     </>
@@ -86,11 +91,15 @@ export async function getServerSideProps({ req, res, query }) {
   const { id } = query;
   const token = getToken(req);
   const user = await fetchUser(token, id);
+  const friends = await fetchFriends(token);
+  console.log(friends, user._id);
+  const isFriend = !friends.find((friend) => friend._id == user._id);
 
   return {
     props: {
       user,
       token,
+      isFriend,
     },
   };
 }
