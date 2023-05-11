@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IUser } from '../../types/user';
 import { IUserWithId } from '../../Components/FriendsColumn/FriendsColumn';
 import Cookie from 'js-cookie'
+import { IDeed } from '../../types/deed';
 
 
 
@@ -30,7 +31,7 @@ export const UserController = createApi({
         }
       }
     }),
-    getFriendsDeed: builder.query<IUserWithId[], {}>({
+    getFriendsDeed: builder.query<IDeed[], {}>({
       query: () => '/get/friends/deeds'
     }),
     searchFriends: builder.query<IUserWithId[], { nickname: string, friendsId: string[] }>({

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { DeedList } from "../../Components/DeedList/DeedList";
 
 import styles from "./Index.module.sass";
@@ -8,9 +8,12 @@ import { useCreateDeedMutation } from "../../store/api/DeedsController";
 import { getId } from "../../utils/cookies/getId";
 import { fetchUser } from "../../utils/fetchers/fetchUser";
 import { getToken } from "../../utils/cookies/getToken";
-import { GetServerSideProps } from "next";
 
-const Deeds = ({ nickname }) => {
+type DeedProps = {
+  nickname: string;
+};
+
+const Deeds: FC<DeedProps> = ({ nickname }) => {
   const [toggler, setToggler] = useState(0);
   const [typeList, setTypeList] = useState("own");
 
@@ -59,7 +62,9 @@ const Deeds = ({ nickname }) => {
           style={{ left: `${toggler}%` }}
         ></div>
       </div>
-      <DeedList type={typeList} flag={isAdd} />
+      <ul className={styles["deeds__list"]}>
+        <DeedList type={typeList} flag={isAdd} />
+      </ul>
       {isAdd && (
         <Modal
           onClose={() => setIsAdd((prev) => !prev)}

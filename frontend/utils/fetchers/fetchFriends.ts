@@ -1,6 +1,6 @@
-import { IUser } from "../../types/user";
+import { IUserWithId } from "../../Components/FriendsColumn/FriendsColumn";
 
-export const fetchFriends = async (token): Promise<IUser[]> => {
+export const fetchFriends = async (token): Promise<IUserWithId[]> => {
   const result = await fetch("http://localhost:5001/users/get/friends", {
     headers: {
       "Content-Type": "application/json",
