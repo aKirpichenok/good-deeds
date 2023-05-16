@@ -32,7 +32,6 @@ const Friends: FC<FriendsProps> = ({ userFriends: data, token, friendsId }) => {
       },
     });
     const text = await result.json();
-    console.log("RESULT", text);
     const data = await fetchFriends(token);
     setFriends(data);
   };

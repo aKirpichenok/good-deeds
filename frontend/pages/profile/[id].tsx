@@ -12,6 +12,7 @@ import { fetchUser } from "../../utils/fetchers/fetchUser";
 import Cookie from "js-cookie";
 import { getToken } from "../../utils/cookies/getToken";
 import { IUserWithId } from "../../Components/FriendsColumn/FriendsColumn";
+import { useAuth } from "../../Components/AuthContext/AuthContext";
 
 interface ProfileProps {
   user: IUserWithId;
@@ -25,9 +26,11 @@ const Profile: FC<ProfileProps> = ({ user, token, id }) => {
 
   const [state, setState] = useState(user);
   const [isEdit, setIsEdit] = useState(false);
+  const { logout } = useAuth();
 
   const deleteProfile = () => {
     deleteTrigger(user._id);
+    logout();
   };
 
   const editProfile = () => {
