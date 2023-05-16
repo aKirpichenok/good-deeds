@@ -1,7 +1,15 @@
-import { FC } from "react";
+import { ChangeEventHandler, FC } from "react";
 import { Input } from "../../../ui/src/Input/Input";
 
-export const FormField: FC<any> = ({
+type FormFieldProps = {
+  type: string;
+  onChange: ChangeEventHandler;
+  label: string;
+  placeholder?: string;
+  error: string;
+};
+
+export const FormField: FC<FormFieldProps> = ({
   type,
   onChange,
   label,
