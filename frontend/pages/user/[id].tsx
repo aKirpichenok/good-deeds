@@ -91,7 +91,7 @@ export async function getServerSideProps({ req, res, query }) {
   const token = getToken(req);
   const user = await fetchUser(token, id);
   const userId = getId(req);
-  const isFriend = !!user.friends.find((friend) => friend._id == userId);
+  const isFriend = !user.friends.find((friend) => friend._id == userId);
 
   return {
     props: {
